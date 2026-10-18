@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aldi Grup — Pengajuan Cepat</title>
+<style>
+  :root {
+    --navy:#0f2a4a; --navy-light:#1b3f6b; --gold:#c9a24b; --gold-light:#e2c47a;
+    --bg:#f4f6fa; --text:#1a2233; --muted:#6b7789; --border:#dfe5ee;
+    --wa:#25D366; --ig1:#833ab4; --ig2:#fd1d1d; --ig3:#fcb045; --mail:#d44638;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Tahoma,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+
+  .topbar { background:var(--navy); color:#cfd8e3; font-size:0.78rem; padding:8px 0; }
+  .topbar .wrap { max-width:1100px; margin:0 auto; padding:0 24px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  .topbar a { color:var(--gold-light); text-decoration:none; }
+
+  .navbar { background:white; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:50; }
+  .navbar .wrap { max-width:1100px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .brand { display:flex; align-items:center; gap:12px; text-decoration:none; }
+  .brand-logo { width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg,var(--navy),var(--navy-light)); color:var(--gold); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem; }
+  .brand-text h1 { font-size:1.05rem; color:var(--navy); line-height:1.1; }
+  .brand-text span { font-size:0.72rem; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; }
+
+  .hero { background:linear-gradient(135deg,rgba(15,42,74,0.96),rgba(27,63,107,0.92)),repeating-linear-gradient(45deg,#122e50 0 12px,#15334f 12px 24px); color:white; padding:48px 24px 60px; }
+  .hero .wrap { max-width:1100px; margin:0 auto; }
+  .hero .badge { display:inline-block; background:rgba(201,162,75,0.18); color:var(--gold-light); border:1px solid rgba(201,162,75,0.4); padding:6px 14px; border-radius:30px; font-size:0.72rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:16px; }
+  .hero h2 { font-size:2rem; margin-bottom:12px; line-height:1.2; }
+  .hero h2 span { color:var(--gold); }
+  .hero p { color:#c8d4e4; max-width:640px; font-size:0.95rem; }
+
+  .main { max-width:1100px; margin:-36px auto 0; padding:0 24px 60px; display:grid; grid-template-columns:1.7fr 1fr; gap:26px; position:relative; z-index:10; }
+
+  .card { background:white; border-radius:14px; border:1px solid var(--border); box-shadow:0 10px 30px rgba(15,42,74,0.06); overflow:hidden; }
+  .card-head { padding:20px 24px; border-bottom:1px solid var(--border); background:#fbfcfe; }
+  .card-head h3 { font-size:1.1rem; color:var(--navy); }
+  .card-head p { font-size:0.82rem; color:var(--muted); margin-top:2px; }
+  .card-body { padding:24px; }
+
+  .field { margin-bottom:16px; }
+  .field label { display:block; font-size:0.8rem; font-weight:600; color:var(--navy); margin-bottom:6px; }
+  .field label .req { color:#d93025; }
+  .field input, .field select, .field textarea {
+    width:100%; padding:11px 13px; border:1px solid var(--border); border-radius:9px;
+    font-size:0.88rem; font-family:inherit; background:white; transition:border 0.2s, box-shadow 0.2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(201,162,75,0.18);
+  }
+  .field textarea { min-height:110px; resize:vertical; }
+  .row-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .err { color:#d93025; font-size:0.72rem; margin-top:4px; display:none; }
+  .field.invalid input, .field.invalid select, .field.invalid textarea { border-color:#d93025; }
+  .field.invalid .err { display:block; }
+
+  .channel-label { font-size:0.8rem; font-weight:700; color:var(--navy); margin:20px 0 10px; display:block; }
+  .channel-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:18px; }
+
+  .channel-link {
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    padding:14px 8px; border:2px solid var(--border); border-radius:11px;
+    background:white; cursor:pointer; transition:all 0.18s; font-family:inherit;
+    font-size:0.72rem; font-weight:700; color:var(--navy); text-align:center;
+    text-decoration:none;
+  }
+  .channel-link:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(15,42,74,0.1); }
+  .ch-icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; }
+  .ch-icon svg { width:20px; height:20px; fill:white; }
+  .channel-link[data-channel="ig"] .ch-icon { background:linear-gradient(135deg,var(--ig1),var(--ig2),var(--ig3)); }
+  .channel-link[data-channel="wa"] .ch-icon { background:var(--wa); }
+  .channel-link[data-channel="mail"] .ch-icon { background:var(--mail); }
+  .channel-link[data-channel="ig"]:hover { border-color:var(--ig2); background:#fff7fb; }
+  .channel-link[data-channel="wa"]:hover { border-color:var(--wa); background:#f2fdf7; }
+  .channel-link[data-channel="mail"]:hover { border-color:var(--mail); background:#fef4f3; }
+  .channel-link small { font-weight:400; color:var(--muted); font-size:0.65rem; }
+
+  .confirm-box {
+    display:none; background:#f0f9ff; border:1px solid #b3e0ff;
+    border-left:4px solid #1e88e5; padding:14px 16px; border-radius:9px;
+    font-size:0.82rem; color:#0d47a1; margin-bottom:16px;
+  }
+  .confirm-box.show { display:block; }
+  .confirm-box strong { display:block; margin-bottom:4px; }
+
+  .btn-primary {
+    width:100%; padding:15px; background:linear-gradient(135deg,var(--navy),var(--navy-light));
+    color:white; border:none; border-radius:10px; font-size:0.95rem; font-weight:700;
+    cursor:pointer; letter-spacing:0.3px; transition:transform 0.15s, box-shadow 0.2s;
+    box-shadow:0 8px 20px rgba(15,42,74,0.25);
+  }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 26px rgba(15,42,74,0.35); }
+  .btn-primary:disabled { opacity:0.55; cursor:not-allowed; transform:none; box-shadow:none; }
+
+  .info-item { display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--border); }
+  .info-item:last-child { border-bottom:none; }
+  .info-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .info-icon svg { width:20px; height:20px; fill:white; }
+  .info-icon.ig { background:linear-gradient(135deg,var(--ig1),var(--ig2),var(--ig3)); }
+  .info-icon.wa { background:var(--wa); }
+  .info-icon.mail { background:var(--mail); }
+  .info-icon.hours { background:var(--navy); }
+  .info-item h5 { font-size:0.72rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+  .info-item p { font-size:0.88rem; color:var(--navy); font-weight:600; }
+  .info-item p.small { font-size:0.75rem; font-weight:400; color:var(--muted); }
+  .info-item a { color:var(--navy); text-decoration:none; }
+  .info-item a:hover { color:var(--gold); }
+
+  .priority-box { background:linear-gradient(135deg,var(--navy),var(--navy-light)); color:white; border-radius:14px; padding:22px; }
+  .priority-box h4 { font-size:0.95rem; margin-bottom:12px; color:var(--gold-light); }
+  .priority-box ul { list-style:none; font-size:0.82rem; }
+  .priority-box li { padding:6px 0; display:flex; justify-content:space-between; color:#c8d4e4; border-bottom:1px solid rgba(255,255,255,0.08); }
+  .priority-box li:last-child { border-bottom:none; }
+  .priority-box li strong { color:white; }
+
+  footer { background:var(--navy); color:#8fa3bd; padding:26px 24px; font-size:0.8rem; text-align:center; }
+  footer a { color:var(--gold-light); text-decoration:none; }
+
+  @media (max-width:900px) {
+    .main { grid-template-columns:1fr; margin-top:-20px; }
+    .hero h2 { font-size:1.5rem; }
+    .row-2 { grid-template-columns:1fr; }
+    .channel-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== TOPBAR (NOMOR WA SUDAH DIPERBAIKI) ===== -->
+<div class="topbar">
+  <div class="wrap">
+    <span>📞 085731569186 &nbsp;|&nbsp; ✉️ afiransyah63@gmail.com</span>
+    <span>
+      <a href="https://ig.me/m/aal911_" target="_blank" rel="noopener">DM Instagram</a> &nbsp;|&nbsp;
+      <a href="https://wa.me/6285731569186" target="_blank" rel="noopener">WhatsApp</a>
+    </span>
+  </div>
+</div>
+
+<nav class="navbar">
+  <div class="wrap">
+    <a class="brand" href="#">
+      <div class="brand-logo">AG</div>
+      <div class="brand-text"><h1>Aldi Grup</h1><span>Pengajuan Cepat</span></div>
+    </a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="badge">Layanan Cepat &amp; Responsif</span>
+    <h2>Pengajuan &amp; Pertanyaan <span>Aldi Grup</span></h2>
+    <p>Isi formulir, lalu klik tombol channel di bawah — pesan Anda akan <strong>langsung diarahkan</strong> ke Instagram, WhatsApp, atau Email admin kami.</p>
+  </div>
+</section>
+
+<div class="main">
+  <div>
+    <div class="card">
+      <div class="card-head">
+        <h3>📝 Formulir Pengajuan</h3>
+        <p>Isi data dengan lengkap agar tim kami dapat membantu secepatnya.</p>
+      </div>
+      <div class="card-body">
+        <form id="ajuanForm" novalidate>
+
+          <div class="row-2">
+            <div class="field">
+              <label>Nama Lengkap <span class="req">*</span></label>
+              <input type="text" name="nama" placeholder="Contoh: Budi Santoso">
+              <span class="err">Nama wajib diisi.</span>
+            </div>
+            <div class="field">
+              <label>Email / No. HP <span class="req">*</span></label>
+              <input type="text" name="kontak" placeholder="email@contoh.com / 08xx">
+              <span class="err">Kontak wajib diisi.</span>
+            </div>
+          </div>
+
+          <div class="row-2">
+            <div class="field">
+              <label>Jenis Pengajuan <span class="req">*</span></label>
+              <select name="jenis">
+                <option value="">— Pilih Jenis —</option>
+                <option>Pertanyaan Umum</option>
+                <option>Pengajuan Layanan</option>
+                <option>Kendala Teknis</option>
+                <option>Billing / Pembayaran</option>
+                <option>Pengaduan / Komplain</option>
+                <option>Lainnya</option>
+              </select>
+              <span class="err">Pilih jenis pengajuan.</span>
+            </div>
+            <div class="field">
+              <label>Urgensi <span class="req">*</span></label>
+              <select name="urgensi">
+                <option value="">— Pilih Urgensi —</option>
+                <option>Rendah — bisa ditunda</option>
+                <option>Sedang — perlu segera</option>
+                <option>Tinggi — mengganggu aktivitas</option>
+                <option>Kritis — harus segera ditangani</option>
+              </select>
+              <span class="err">Pilih tingkat urgensi.</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Subjek / Judul Singkat <span class="req">*</span></label>
+            <input type="text" name="subjek" placeholder="Contoh: Pengajuan reset password akun">
+            <span class="err">Subjek wajib diisi.</span>
+          </div>
+
+          <div class="field">
+            <label>Detail Pesan <span class="req">*</span></label>
+            <textarea name="pesan" placeholder="Jelaskan pengajuan atau pertanyaan Anda (min. 15 karakter)..."></textarea>
+            <span class="err">Detail pesan minimal 15 karakter.</span>
+          </div>
+
+          <div class="confirm-box" id="confirmBox">
+            <strong>✅ Form siap dikirim</strong>
+            Klik salah satu tombol channel di bawah untuk mengirim pesan Anda.
+          </div>
+
+          <span class="channel-label">📤 Kirim melalui:</span>
+          <div class="channel-grid" id="channelGrid">
+            <a class="channel-link" data-channel="ig" href="#" target="_blank" rel="noopener">
+              <span class="ch-icon">
+                <svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+              </span>
+              DM Instagram
+              <small>@aal911_</small>
+            </a>
+
+            <a class="channel-link" data-channel="wa" href="#" target="_blank" rel="noopener">
+              <span class="ch-icon">
+                <svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.6-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.4M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 4.9L2 22l5.2-1.4c1.4.8 3 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2"/></svg>
+              </span>
+              WhatsApp
+              <small>0857 3156 9186</small>
+            </a>
+
+            <a class="channel-link" data-channel="mail" href="#" target="_blank" rel="noopener">
+              <span class="ch-icon">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2m0 4-8 5-8-5V6l8 5 8-5z"/></svg>
+              </span>
+              Email
+              <small>afiransyah63@gmail.com</small>
+            </a>
+          </div>
+
+          <button type="submit" class="btn-primary" id="submitBtn">
+            📤 Kirim Pengajuan
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" style="margin-bottom:18px;">
+      <div class="card-head"><h3>Kontak Admin</h3><p>Pilih channel sesuai kebutuhan</p></div>
+      <div class="card-body">
+        <div class="info-item">
+          <div class="info-icon ig"><svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg></div>
+          <div><h5>Instagram DM</h5><p><a href="https://ig.me/m/aal911_" target="_blank" rel="noopener">@aal911_</a></p><p class="small">Respons tercepat</p></div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon wa"><svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.6-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.4M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 4.9L2 22l5.2-1.4c1.4.8 3 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2"/></svg></div>
+          <div><h5>WhatsApp</h5><p><a href="https://wa.me/6285731569186" target="_blank" rel="noopener">085731569186</a></p><p class="small">Chat langsung</p></div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon mail"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2m0 4-8 5-8-5V6l8 5 8-5z"/></svg></div>
+          <div><h5>Email</h5><p><a href="mailto:afiransyah63@gmail.com">afiransyah63@gmail.com</a></p><p class="small">Untuk dokumen/lampiran</p></div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon hours"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20m0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16m.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7z"/></svg></div>
+          <div><h5>Jam Operasional</h5><p>Senin–Jumat</p><p class="small">08.00 – 17.00 WIB</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="priority-box">
+      <h4>⏱ Target Respons</h4>
+      <ul>
+        <li><span>Urgensi Rendah</span> <strong>&lt; 24 jam</strong></li>
+        <li><span>Urgensi Sedang</span> <strong>&lt; 8 jam</strong></li>
+        <li><span>Urgensi Tinggi</span> <strong>&lt; 4 jam</strong></li>
+        <li><span>Urgensi Kritis</span> <strong>&lt; 1 jam</strong></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © 2026 Aldi Grup — Layanan Pengajuan Cepat. Semua hak dilindungi.
+  &nbsp;|&nbsp;
+  <a href="https://ig.me/m/aal911_" target="_blank" rel="noopener">Instagram</a> ·
+  <a href="https://wa.me/6285731569186" target="_blank" rel="noopener">WhatsApp</a> ·
+  <a href="mailto:afiransyah63@gmail.com">Email</a>
+</footer>
+
+<script>
+  const form = document.getElementById('ajuanForm');
+  const confirmBox = document.getElementById('confirmBox');
+  const channelLinks = document.querySelectorAll('.channel-link');
+
+  function validateField(fieldEl) {
+    const el = fieldEl.querySelector('input, textarea, select');
+    if (!el) return true;
+    const val = el.value.trim();
+    fieldEl.classList.remove('invalid');
+    if (!val) { fieldEl.classList.add('invalid'); return false; }
+    if (el.name === 'pesan' && val.length < 15) {
+      fieldEl.classList.add('invalid'); return false;
+    }
+    return true;
+  }
+
+  function validateAll() {
+    let valid = true;
+    form.querySelectorAll('.field').forEach(f => { if (!validateField(f)) valid = false; });
+    return valid;
+  }
+
+  function buildMessage() {
+    const nama    = form.nama.value.trim();
+    const kontak  = form.kontak.value.trim();
+    const jenis   = form.jenis.value;
+    const urgensi = form.urgensi.value;
+    const subjek  = form.subjek.value.trim();
+    const pesan   = form.pesan.value.trim();
+
+    return `Halo Admin Aldi Grup,\n\n` +
+      `Nama    : ${nama}\n` +
+      `Kontak  : ${kontak}\n` +
+      `Jenis   : ${jenis}\n` +
+      `Urgensi : ${urgensi}\n` +
+      `Subjek  : ${subjek}\n\n` +
+      `Detail:\n${pesan}\n\n` +
+      `— dikirim dari Website Aldi Grup`;
+  }
+
+  function updateChannelLinks() {
+    const subjek = form.subjek.value.trim() || 'Pengajuan dari Website Aldi Grup';
+    const msg = buildMessage();
+
+    channelLinks.forEach(link => {
+      const ch = link.dataset.channel;
+      if (ch === 'ig') {
+        link.href = 'https://ig.me/m/aal911_';
+      } else if (ch === 'wa') {
+        link.href = 'https://wa.me/6285731569186?text=' + encodeURIComponent(msg);
+      } else if (ch === 'mail') {
+        link.href = 'mailto:afiransyah63@gmail.com?subject=' +
+          encodeURIComponent('[Aldi Grup] ' + subjek) +
+          '&body=' + encodeURIComponent(msg);
+      }
+    });
+
+    if (validateAll()) {
+      confirmBox.classList.add('show');
+    } else {
+      confirmBox.classList.remove('show');
+    }
+  }
+
+  form.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('input', updateChannelLinks);
+    el.addEventListener('change', updateChannelLinks);
+  });
+
+  channelLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      if (!validateAll()) {
+        e.preventDefault();
+        alert('Mohon lengkapi semua field yang wajib diisi terlebih dahulu.');
+        form.querySelector('.field.invalid')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      if (link.dataset.channel === 'ig') {
+        const msg = buildMessage();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(msg).catch(() => {});
+        }
+      }
+    });
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!validateAll()) {
+      alert('Mohon lengkapi semua field yang wajib diisi.');
+      return;
+    }
+    document.querySelector('.channel-link[data-channel="wa"]').click();
+  });
+
+  updateChannelLinks();
+</script>
+
+</body>
+</html>
